@@ -100,7 +100,7 @@
     }
 
     .card.embed-card {
-      height: 500px; /* Chỉnh nếu cần cao hơn */
+      height: 500px;
       padding: 0;
     }
 
@@ -108,7 +108,7 @@
       width: 100%;
       height: 100%;
       border: none;
-      pointer-events: none; /* Ngăn tương tác trực tiếp với iframe, click sẽ đi qua overlay */
+      pointer-events: none;
     }
 
     .overlay-link {
@@ -119,7 +119,6 @@
       bottom: 0;
       z-index: 10;
       text-decoration: none;
-      cursor: pointer;
     }
 
     .card::before {
@@ -144,7 +143,7 @@
 
     .card h3, .card p {
       position: relative;
-      z-index: 15; /* Đảm bảo text ở trên overlay nếu cần */
+      z-index: 15;
     }
 
     .embed-caption {
@@ -209,6 +208,16 @@
       font-size: 0.9rem;
     }
 
+    footer a.email {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    footer a.email:hover {
+      color: white;
+    }
+
     .particle {
       position: absolute;
       background: var(--primary);
@@ -233,25 +242,25 @@
     <nav>
       <a href="#projects">Projects</a>
       <a href="https://github.com/tuyene98-ui" target="_blank">GitHub</a>
-      <a href="mailto:green@gmail.com">Contact</a>
+      <a href="mailto:bkgamingbkgaming@gmail.com">Contact</a>
     </nav>
 
     <div class="projects" id="projects">
-      <!-- Ô 1: Pháo hoa - Click để mở trang gốc -->
+      <!-- Ô 1: Pháo hoa -->
       <div class="card embed-card">
         <iframe src="https://yu-ebon.vercel.app/" title="Pháo hoa năm mới free"></iframe>
         <a href="https://yu-ebon.vercel.app/" target="_blank" class="overlay-link"></a>
         <div class="embed-caption">Pháo hoa năm mới free 🎆 (Nhấp để mở đầy đủ)</div>
       </div>
 
-      <!-- Ô 2: Sinh nhật - Click để mở trang gốc -->
+      <!-- Ô 2: Sinh nhật -->
       <div class="card embed-card">
         <iframe src="https://sin-nhat.vercel.app/" title="Sinh Nhật Nguyễn Chí Dự - Quà từ Green"></iframe>
         <a href="https://sin-nhat.vercel.app/" target="_blank" class="overlay-link"></a>
         <div class="embed-caption">Sinh Nhật Nguyễn Chí Dự - Quà từ Green 💖 (Nhấp để mở)</div>
       </div>
 
-      <!-- Ô 3: Ví dụ project khác (không embed) -->
+      <!-- Ô 3: Ví dụ -->
       <div class="card">
         <h3>Project 3</h3>
         <p>Bot Discord + API tự viết, Node.js</p>
@@ -263,7 +272,9 @@
     </a>
 
     <footer>
-      © 2026 Green - Made with ❤️ | <a href="https://github.com/tuyene98-ui" style="color: var(--gray);">tuyene98-ui</a>
+      © 2026 Green - Made with ❤️ | 
+      <a href="https://github.com/tuyene98-ui" style="color: var(--gray);">tuyene98-ui</a> | 
+      Contact: <a href="mailto:bkgamingbkgaming@gmail.com" class="email">bkgamingbkgaming@gmail.com</a>
     </footer>
   </div>
 

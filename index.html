@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vũ Trụ Thật 3D - Full Solar System (No Black Screen)</title>
+  <style> body { margin:0; overflow:hidden; background:#000; } </style>
+</head>
+<body>
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.module.js';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/controls/OrbitControls.js';
+    import { EffectComposer } from 'https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/postprocessing/RenderPass.js';
+    import { UnrealBloomPass } from 'https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/postprocessing/UnrealBloomPass.js';
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    composer.addPass(new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.0, 0.4, 0.85));
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+
+    // Stars
+    const starsGeo = new THREE.BufferGeometry();
+    const starsMat = new THREE.PointsMaterial({ color: 0xffffff, size: 1.5 });
+    const positions = new Float32Array(50000 * 3);
+    for (let i = 0; i < positions.length; i += 3) {
+      positions[i] = (Math.random() - 0.5) * 8000;
+      positions[i+1] = (Math.random() - 0.5) * 8000;
+      positions[i+2] = (Math.random() - 0.5) * 8000;
+    }
+    starsGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    scene.add(new THREE.Points(starsGeo, starsMat));
+
+    const loader = new THREE.TextureLoader();
+    loader.setCrossOrigin('anonymous'); // Vẫn giữ, dù local thì ok
+
+    // Sun
+    const sunTex = loader.load('textures/2k_sun.jpg');
+    const sunGeo = new THREE.SphereGeometry(30, 64, 64);
+    const sunMat = new THREE.MeshBasicMaterial({ map: sunTex });
+    const sun = new THREE.Mesh(sunGeo, sunMat);
+    scene.add(sun);
+
+    scene.add(new THREE.PointLight(0xffffff, 5, 5000).position.set(0,0,0));
+
+    // Planet creator
+    function createPlanet(radius, texPath, distance, orbitSpeed, rotSpeed = 0.005, fallbackColor = 0xffffff) {
+      const tex = loader.load(texPath);
+      const geo = new THREE.SphereGeometry(radius, 64, 64);
+      const mat = new THREE.MeshStandardMaterial({ map: tex });
+      const mesh = new THREE.Mesh(geo, mat);
+      scene.add(mesh);
+      return { mesh, distance, orbitSpeed, rotSpeed };
+    }
+
+    const planets = [
+      createPlanet(4, 'textures/2k_mercury.jpg', 80, 0.04),
+      createPlanet(6, 'textures/2k_venus_surface.jpg', 130, 0.025),
+      createPlanet(6.5, 'textures/2k_earth_daymap.jpg', 200, 0.015),
+      createPlanet(5, 'textures/2k_mars.jpg', 280, 0.01),
+      createPlanet(15, 'textures/2k_jupiter.jpg', 500, 0.004),
+      createPlanet(12, 'textures/2k_saturn.jpg', 800, 0.003),
+      createPlanet(8, 'textures/2k_uranus.jpg', 1100, 0.002),
+      createPlanet(8, 'textures/2k_neptune.jpg', 1400, 0.0015)
+    ];
+
+    // Saturn rings
+    const saturn = planets[5].mesh;
+    const ringTex = loader.load('textures/2k_saturn_ring_alpha.png');
+    const ringGeo = new THREE.RingGeometry(20, 35, 64);
+    const ringMat = new THREE.MeshBasicMaterial({ map: ringTex, side: THREE.DoubleSide, transparent: true });
+    const rings = new THREE.Mesh(ringGeo, ringMat);
+    rings.rotation.x = Math.PI / 2.5;
+    saturn.add(rings);
+
+    camera.position.set(0, 600, 2500);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      sun.rotation.y += 0.0005;
+
+      const time = Date.now() * 0.00005;
+      planets.forEach(p => {
+        const angle = time * p.orbitSpeed;
+        p.mesh.position.x = p.distance * Math.cos(angle);
+        p.mesh.position.z = p.distance * Math.sin(angle);
+        p.mesh.rotation.y += p.rotSpeed;
+      });
+
+      controls.update();
+      composer.render();
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      composer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>

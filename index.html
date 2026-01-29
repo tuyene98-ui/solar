@@ -92,23 +92,34 @@
       backdrop-filter: blur(12px);
       border: 1px solid rgba(14, 165, 233, 0.2);
       border-radius: 20px;
-      padding: 30px 24px;
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       box-shadow: 0 10px 30px rgba(0,0,0,0.3);
       position: relative;
       overflow: hidden;
+      cursor: pointer;
     }
 
     .card.embed-card {
+      height: 500px; /* Chỉnh nếu cần cao hơn */
       padding: 0;
-      height: 500px; /* Chỉnh cao hơn nếu cần, ví dụ 600px hoặc 70vh */
-      overflow: hidden;
     }
 
     .card.embed-card iframe {
       width: 100%;
       height: 100%;
       border: none;
+      pointer-events: none; /* Ngăn tương tác trực tiếp với iframe, click sẽ đi qua overlay */
+    }
+
+    .overlay-link {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10;
+      text-decoration: none;
+      cursor: pointer;
     }
 
     .card::before {
@@ -118,6 +129,7 @@
       background: linear-gradient(135deg, rgba(14,165,233,0.1), transparent);
       opacity: 0;
       transition: opacity 0.4s;
+      z-index: 5;
     }
 
     .card:hover {
@@ -130,15 +142,9 @@
       opacity: 1;
     }
 
-    .card h3 {
-      font-size: 1.5rem;
-      margin-bottom: 12px;
-      color: white;
-    }
-
-    .card p {
-      color: var(--gray);
-      font-size: 0.95rem;
+    .card h3, .card p {
+      position: relative;
+      z-index: 15; /* Đảm bảo text ở trên overlay nếu cần */
     }
 
     .embed-caption {
@@ -154,6 +160,8 @@
       padding: 10px;
       opacity: 0.9;
       transition: opacity 0.3s;
+      z-index: 15;
+      pointer-events: none;
     }
 
     .card:hover .embed-caption {
@@ -229,19 +237,21 @@
     </nav>
 
     <div class="projects" id="projects">
-      <!-- Ô 1: Embed pháo hoa năm mới -->
+      <!-- Ô 1: Pháo hoa - Click để mở trang gốc -->
       <div class="card embed-card">
         <iframe src="https://yu-ebon.vercel.app/" title="Pháo hoa năm mới free"></iframe>
-        <div class="embed-caption">Pháo hoa năm mới free 🎆</div>
+        <a href="https://yu-ebon.vercel.app/" target="_blank" class="overlay-link"></a>
+        <div class="embed-caption">Pháo hoa năm mới free 🎆 (Nhấp để mở đầy đủ)</div>
       </div>
 
-      <!-- Ô 2: Embed sinh nhật -->
+      <!-- Ô 2: Sinh nhật - Click để mở trang gốc -->
       <div class="card embed-card">
         <iframe src="https://sin-nhat.vercel.app/" title="Sinh Nhật Nguyễn Chí Dự - Quà từ Green"></iframe>
-        <div class="embed-caption">Sinh Nhật Nguyễn Chí Dự - Quà từ Green 💖</div>
+        <a href="https://sin-nhat.vercel.app/" target="_blank" class="overlay-link"></a>
+        <div class="embed-caption">Sinh Nhật Nguyễn Chí Dự - Quà từ Green 💖 (Nhấp để mở)</div>
       </div>
 
-      <!-- Ô 3: Ví dụ project khác -->
+      <!-- Ô 3: Ví dụ project khác (không embed) -->
       <div class="card">
         <h3>Project 3</h3>
         <p>Bot Discord + API tự viết, Node.js</p>

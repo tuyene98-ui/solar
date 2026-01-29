@@ -2,111 +2,273 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <title>Vũ Trụ Thật 3D - Full Solar System (No Black Screen)</title>
-  <style> body { margin:0; overflow:hidden; background:#000; } </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Green - Đồng Nai Dev</title>
+  <link rel="icon" href="https://github.com/favicon.ico"/>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --primary: #0ea5e9;
+      --accent: #a78bfa;
+      --text: #e2e8f0;
+      --gray: #94a3b8;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+      line-height: 1.6;
+      padding: 40px 20px;
+      background-attachment: fixed;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 4rem;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 16px;
+      font-weight: 900;
+    }
+
+    p.subtitle {
+      font-size: 1.4rem;
+      color: var(--gray);
+      margin-bottom: 60px;
+    }
+
+    nav {
+      margin-bottom: 80px;
+    }
+
+    nav a {
+      color: var(--gray);
+      text-decoration: none;
+      margin: 0 20px;
+      font-size: 1.1rem;
+      position: relative;
+      transition: color 0.3s;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 3px;
+      bottom: -8px;
+      left: 0;
+      background: var(--primary);
+      transition: width 0.4s ease;
+      border-radius: 2px;
+    }
+
+    nav a:hover {
+      color: white;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 50px;
+    }
+
+    .card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(14, 165, 233, 0.2);
+      border-radius: 20px;
+      padding: 30px 24px;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card.embed-card {
+      padding: 0;
+      height: 500px; /* Chỉnh cao hơn nếu cần, ví dụ 600px hoặc 70vh */
+      overflow: hidden;
+    }
+
+    .card.embed-card iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, rgba(14,165,233,0.1), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .card:hover {
+      transform: translateY(-15px) scale(1.05);
+      border-color: var(--primary);
+      box-shadow: 0 25px 50px rgba(14, 165, 233, 0.4);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+      color: white;
+    }
+
+    .card p {
+      color: var(--gray);
+      font-size: 0.95rem;
+    }
+
+    .embed-caption {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: white;
+      font-weight: bold;
+      text-shadow: 0 0 10px black;
+      background: rgba(0,0,0,0.4);
+      padding: 10px;
+      opacity: 0.9;
+      transition: opacity 0.3s;
+    }
+
+    .card:hover .embed-caption {
+      opacity: 1;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 50px;
+      padding: 16px 40px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: white;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s;
+      box-shadow: 0 10px 30px rgba(14,165,233,0.3);
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.7s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 40px rgba(14,165,233,0.6);
+    }
+
+    footer {
+      margin-top: 120px;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    .particle {
+      position: absolute;
+      background: var(--primary);
+      border-radius: 50%;
+      opacity: 0.3;
+      pointer-events: none;
+      animation: float 15s infinite linear;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) translateX(0); }
+      100% { transform: translateY(-100px) translateX(100px); }
+    }
+  </style>
 </head>
 <body>
-  <script type="module">
-    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.module.js';
-    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/controls/OrbitControls.js';
-    import { EffectComposer } from 'https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/postprocessing/EffectComposer.js';
-    import { RenderPass } from 'https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/postprocessing/RenderPass.js';
-    import { UnrealBloomPass } from 'https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/postprocessing/UnrealBloomPass.js';
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+  <div class="container">
+    <h1>Green</h1>
+    <p class="subtitle">Front-end Dev | Đồng Nai, Vietnam</p>
 
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
+    <nav>
+      <a href="#projects">Projects</a>
+      <a href="https://github.com/tuyene98-ui" target="_blank">GitHub</a>
+      <a href="mailto:green@gmail.com">Contact</a>
+    </nav>
 
-    const composer = new EffectComposer(renderer);
-    composer.addPass(new RenderPass(scene, camera));
-    composer.addPass(new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.0, 0.4, 0.85));
+    <div class="projects" id="projects">
+      <!-- Ô 1: Embed pháo hoa năm mới -->
+      <div class="card embed-card">
+        <iframe src="https://yu-ebon.vercel.app/" title="Pháo hoa năm mới free"></iframe>
+        <div class="embed-caption">Pháo hoa năm mới free 🎆</div>
+      </div>
 
-    scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+      <!-- Ô 2: Embed sinh nhật -->
+      <div class="card embed-card">
+        <iframe src="https://sin-nhat.vercel.app/" title="Sinh Nhật Nguyễn Chí Dự - Quà từ Green"></iframe>
+        <div class="embed-caption">Sinh Nhật Nguyễn Chí Dự - Quà từ Green 💖</div>
+      </div>
 
-    // Stars
-    const starsGeo = new THREE.BufferGeometry();
-    const starsMat = new THREE.PointsMaterial({ color: 0xffffff, size: 1.5 });
-    const positions = new Float32Array(50000 * 3);
-    for (let i = 0; i < positions.length; i += 3) {
-      positions[i] = (Math.random() - 0.5) * 8000;
-      positions[i+1] = (Math.random() - 0.5) * 8000;
-      positions[i+2] = (Math.random() - 0.5) * 8000;
-    }
-    starsGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    scene.add(new THREE.Points(starsGeo, starsMat));
+      <!-- Ô 3: Ví dụ project khác -->
+      <div class="card">
+        <h3>Project 3</h3>
+        <p>Bot Discord + API tự viết, Node.js</p>
+      </div>
+    </div>
 
-    const loader = new THREE.TextureLoader();
-    loader.setCrossOrigin('anonymous'); // Vẫn giữ, dù local thì ok
+    <a href="https://github.com/tuyene98-ui" target="_blank" class="btn">
+      Xem tất cả trên GitHub →
+    </a>
 
-    // Sun
-    const sunTex = loader.load('textures/2k_sun.jpg');
-    const sunGeo = new THREE.SphereGeometry(30, 64, 64);
-    const sunMat = new THREE.MeshBasicMaterial({ map: sunTex });
-    const sun = new THREE.Mesh(sunGeo, sunMat);
-    scene.add(sun);
+    <footer>
+      © 2026 Green - Made with ❤️ | <a href="https://github.com/tuyene98-ui" style="color: var(--gray);">tuyene98-ui</a>
+    </footer>
+  </div>
 
-    scene.add(new THREE.PointLight(0xffffff, 5, 5000).position.set(0,0,0));
-
-    // Planet creator
-    function createPlanet(radius, texPath, distance, orbitSpeed, rotSpeed = 0.005, fallbackColor = 0xffffff) {
-      const tex = loader.load(texPath);
-      const geo = new THREE.SphereGeometry(radius, 64, 64);
-      const mat = new THREE.MeshStandardMaterial({ map: tex });
-      const mesh = new THREE.Mesh(geo, mat);
-      scene.add(mesh);
-      return { mesh, distance, orbitSpeed, rotSpeed };
-    }
-
-    const planets = [
-      createPlanet(4, 'textures/2k_mercury.jpg', 80, 0.04),
-      createPlanet(6, 'textures/2k_venus_surface.jpg', 130, 0.025),
-      createPlanet(6.5, 'textures/2k_earth_daymap.jpg', 200, 0.015),
-      createPlanet(5, 'textures/2k_mars.jpg', 280, 0.01),
-      createPlanet(15, 'textures/2k_jupiter.jpg', 500, 0.004),
-      createPlanet(12, 'textures/2k_saturn.jpg', 800, 0.003),
-      createPlanet(8, 'textures/2k_uranus.jpg', 1100, 0.002),
-      createPlanet(8, 'textures/2k_neptune.jpg', 1400, 0.0015)
-    ];
-
-    // Saturn rings
-    const saturn = planets[5].mesh;
-    const ringTex = loader.load('textures/2k_saturn_ring_alpha.png');
-    const ringGeo = new THREE.RingGeometry(20, 35, 64);
-    const ringMat = new THREE.MeshBasicMaterial({ map: ringTex, side: THREE.DoubleSide, transparent: true });
-    const rings = new THREE.Mesh(ringGeo, ringMat);
-    rings.rotation.x = Math.PI / 2.5;
-    saturn.add(rings);
-
-    camera.position.set(0, 600, 2500);
-
-    function animate() {
-      requestAnimationFrame(animate);
-      sun.rotation.y += 0.0005;
-
-      const time = Date.now() * 0.00005;
-      planets.forEach(p => {
-        const angle = time * p.orbitSpeed;
-        p.mesh.position.x = p.distance * Math.cos(angle);
-        p.mesh.position.z = p.distance * Math.sin(angle);
-        p.mesh.rotation.y += p.rotSpeed;
-      });
-
-      controls.update();
-      composer.render();
-    }
-    animate();
-
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      composer.setSize(window.innerWidth, window.innerHeight);
-    });
+  <script>
+    setInterval(() => {
+      if (Math.random() > 0.97) {
+        const p = document.createElement('div');
+        p.classList.add('particle');
+        p.style.width = p.style.height = Math.random() * 6 + 'px';
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.animationDuration = Math.random() * 10 + 10 + 's';
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 20000);
+      }
+    }, 300);
   </script>
 </body>
 </html>
